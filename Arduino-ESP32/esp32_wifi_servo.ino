@@ -10,10 +10,11 @@
 SMS_STS st;
 
 // ==================== Wi-Fi Configuration ====================
-const char *WIFI_SSID = "rosnet";             // Change this
-const char *WIFI_PASSWORD = "12345678";       // Change this
-const char *AGENT_IP = "ros-FreeBook.local";  // Your PC's IP address
-const int AGENT_PORT = 8888;                  // micro-ROS Agent port
+// REMOVED 'const' to match function signature expectations
+char WIFI_SSID[] = "rosnet";        // Change this
+char WIFI_PASSWORD[] = "rosnet1234";  // Change this
+char AGENT_IP[] = "192.168.0.102";   // Use IP address instead of hostname for reliability
+const int AGENT_PORT = 8888;        // micro-ROS Agent port
 // ===========================================================
 
 // Servo UART pins
@@ -21,7 +22,7 @@ const int AGENT_PORT = 8888;                  // micro-ROS Agent port
 #define S_TXD 14  // GPIO13 - TX
 
 // Built-in LED
-#define LED_PIN 2
+#define LED_PIN 30
 
 // ROS2 node and topics
 rcl_node_t node;
@@ -120,9 +121,6 @@ void setup() {
   // ========== Step 4: Initialize micro-ROS with UDP transport ==========
   // This sets up micro-ROS to use Wi-Fi/UDP instead of Serial
   set_microros_wifi_transports(WIFI_SSID, WIFI_PASSWORD, AGENT_IP, AGENT_PORT);
-
-  // Alternative if above doesn't work (some micro-ROS versions):
-  // set_microros_transports();  // Will use configured transport from menuconfig
 
   // ========== Step 5: Initialize ROS2 node ==========
   allocator = rcl_get_default_allocator();
