@@ -10,10 +10,10 @@
 SMS_STS st;
 
 // ==================== Wi-Fi Configuration ====================
-const char* WIFI_SSID = "rosnet";        // Change this
-const char* WIFI_PASSWORD = "12345678"; // Change this
-const char* AGENT_IP = "ros-FreeBook.local";           // Your PC's IP address
-const int AGENT_PORT = 8888;                     // micro-ROS Agent port
+const char *WIFI_SSID = "rosnet";             // Change this
+const char *WIFI_PASSWORD = "12345678";       // Change this
+const char *AGENT_IP = "ros-FreeBook.local";  // Your PC's IP address
+const int AGENT_PORT = 8888;                  // micro-ROS Agent port
 // ===========================================================
 
 // Servo UART pins
@@ -75,16 +75,16 @@ void connectToWiFi() {
   Serial.println();
   Serial.print("Connecting to WiFi: ");
   Serial.println(WIFI_SSID);
-  
+
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  
+
   int timeout = 0;
   while (WiFi.status() != WL_CONNECTED && timeout < 30) {
     delay(500);
     Serial.print(".");
     timeout++;
   }
-  
+
   if (WiFi.status() == WL_CONNECTED) {
     wifi_connected = true;
     Serial.println("\nWiFi connected!");
@@ -103,10 +103,10 @@ void connectToWiFi() {
 void setup() {
   // ========== Step 1: Connect to Wi-Fi FIRST ==========
   connectToWiFi();
-  
+
   // Wait a moment for network to stabilize
   delay(2000);
-  
+
   // ========== Step 2: Setup LED ==========
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
@@ -119,8 +119,8 @@ void setup() {
 
   // ========== Step 4: Initialize micro-ROS with UDP transport ==========
   // This sets up micro-ROS to use Wi-Fi/UDP instead of Serial
-  set_microros_esp32_wifi_transports(WIFI_SSID, WIFI_PASSWORD, AGENT_IP, AGENT_PORT);
-  
+  set_microros_wifi_transports(WIFI_SSID, WIFI_PASSWORD, AGENT_IP, AGENT_PORT);
+
   // Alternative if above doesn't work (some micro-ROS versions):
   // set_microros_transports();  // Will use configured transport from menuconfig
 
@@ -160,7 +160,7 @@ void setup() {
   digitalWrite(LED_PIN, HIGH);
   delay(500);
   digitalWrite(LED_PIN, LOW);
-  
+
   Serial.println("ESP32 micro-ROS setup complete!");
 }
 
@@ -171,7 +171,7 @@ void loop() {
     connectToWiFi();
     delay(2000);
   }
-  
+
   // Process ROS2 messages
   rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
 
